@@ -230,11 +230,6 @@ class InterviewForm extends React.Component {
       }));
   }
 
-  handleSubmit() {
-    localStorage.removeItem(LS_INTERVIEW_FORM_KEY);
-    return postInterviewExperience(portInterviewFormToRequestFormat(getInterviewForm(this.state)));
-  }
-
   render() {
     return (
       <div>
