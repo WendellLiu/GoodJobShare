@@ -149,7 +149,15 @@ const routes = () => ({
           component: InterviewFormContainer,
         },
         {
+          path: 'edit/interview/:id',
+          component: InterviewFormContainer,
+        },
+        {
           path: 'work-experiences',
+          component: WorkExperiencesFormContainer,
+        },
+        {
+          path: 'edit/work-experiences/:id',
           component: WorkExperiencesFormContainer,
         },
       ],
