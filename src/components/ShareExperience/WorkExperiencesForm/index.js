@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import R from 'ramda';
 import Helmet from 'react-helmet';
 import { scroller } from 'react-scroll';
@@ -16,10 +17,6 @@ import {
   workExperiencesToBody,
   propsWorkExperiencesForm,
 } from '../utils';
-
-import {
-  postWorkExperience,
-} from '../../../apis/workExperiencesApi';
 
 import {
   workExperiencesFormCheck,
@@ -122,10 +119,13 @@ class WorkExperiencesForm extends React.Component {
   }
 
   onSubmit() {
+    const {
+      onFormPost,
+    } = this.props;
     const valid = workExperiencesFormCheck(propsWorkExperiencesForm(this.state));
 
     if (valid) {
-      const p = postWorkExperience(workExperiencesToBody(this.state));
+      const p = onFormPost(workExperiencesToBody(this.state));
       p.then(() => {
         ReactGA.event({
           category: GA_CATEGORY.SHARE_WORK,
@@ -291,5 +291,9 @@ class WorkExperiencesForm extends React.Component {
     );
   }
 }
+
+WorkExperiencesForm.propTypes = {
+  onFormPost: PropTypes.func,
+};
 
 export default WorkExperiencesForm;
