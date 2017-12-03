@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import R from 'ramda';
 import Helmet from 'react-helmet';
 import { scroller } from 'react-scroll';
@@ -11,10 +12,6 @@ import styles from './InterviewForm.module.css';
 
 import InterviewInfo from './InterviewInfo';
 import InterviewExperience from './InterviewExperience';
-
-import {
-  postInterviewExperience,
-} from '../../../apis/interviewExperiencesApi';
 
 import {
   interviewFormCheck,
@@ -131,10 +128,13 @@ class InterviewForm extends React.Component {
   }
 
   onSubmit() {
+    const {
+      onFormPost,
+    } = this.props;
     const valid = interviewFormCheck(getInterviewForm(this.state));
 
     if (valid) {
-      const p = postInterviewExperience(portInterviewFormToRequestFormat(getInterviewForm(this.state)));
+      const p = onFormPost(portInterviewFormToRequestFormat(getInterviewForm(this.state)));
       p.then(() => {
         ReactGA.event({
           category: GA_CATEGORY.SHARE_INTERVIEW,
@@ -287,6 +287,8 @@ class InterviewForm extends React.Component {
   }
 }
 
-InterviewForm.propTypes = {};
+InterviewForm.propTypes = {
+  onFormPost: PropTypes.func,
+};
 
 export default InterviewForm;
