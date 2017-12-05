@@ -6,6 +6,8 @@ import { scroller } from 'react-scroll';
 import ReactGA from 'react-ga';
 import { Heading } from 'common/base';
 
+import defaultFormConverter from './helpers/defaultFormConverter';
+
 import SubmitArea from '../../../containers/ShareExperience/SubmitAreaContainer';
 
 import WorkInfo from './WorkInfo';
@@ -94,8 +96,10 @@ class WorkExperiencesForm extends React.Component {
     this.editBlock = this.editBlock.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
+    const dForm = defaultFormConverter(props.initDefaultForm) || defaultForm;
+
     this.state = {
-      ...defaultForm,
+      ...dForm,
       submitted: false,
     };
 
@@ -294,6 +298,7 @@ class WorkExperiencesForm extends React.Component {
 
 WorkExperiencesForm.propTypes = {
   onFormPost: PropTypes.func,
+  initDefaultForm: PropTypes.object,
 };
 
 export default WorkExperiencesForm;

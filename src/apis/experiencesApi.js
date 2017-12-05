@@ -32,3 +32,6 @@ export const getExperiences = ({
 
   return fetchUtil(url)('GET');
 };
+
+export const getOneExperiences = experienceId =>
+  fetchUtil(`${endpoint}/${experienceId}`)('GET');

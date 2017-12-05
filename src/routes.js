@@ -17,8 +17,12 @@ import ShareExperience
 from './components/ShareExperience';
 import InterviewFormContainer
 from './containers/ShareExperience/InterviewFormContainer';
+import InterviewForm from './components/ShareExperience/InterviewForm';
+import WorkExperiencesForm from './components/ShareExperience/WorkExperiencesForm';
 import WorkExperiencesFormContainer
   from './containers/ShareExperience/WorkExperiencesFormContainer';
+
+import editFormHOC from './components/ShareExperience/common/editFormHOC';
 
 import Me from './containers/Me';
 import About from './components/About';
@@ -149,16 +153,16 @@ const routes = () => ({
           component: InterviewFormContainer,
         },
         {
-          path: 'edit/interview/:id',
-          component: InterviewFormContainer,
+          path: 'edit/interview/:experienceId',
+          component: editFormHOC(InterviewForm),
         },
         {
           path: 'work-experiences',
           component: WorkExperiencesFormContainer,
         },
         {
-          path: 'edit/work-experiences/:id',
-          component: WorkExperiencesFormContainer,
+          path: 'edit/work-experiences/:experienceId',
+          component: editFormHOC(WorkExperiencesForm),
         },
       ],
     },

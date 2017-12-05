@@ -6,6 +6,8 @@ import { scroller } from 'react-scroll';
 import ReactGA from 'react-ga';
 import { Heading } from 'common/base';
 
+import defaultFormConverter from './helpers/defaultFormConverter';
+
 import SubmitArea from '../../../containers/ShareExperience/SubmitAreaContainer';
 
 import styles from './InterviewForm.module.css';
@@ -104,8 +106,10 @@ class InterviewForm extends React.Component {
     this.editBlock = this.editBlock.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
+    const dForm = defaultFormConverter(props.initDefaultForm) || defaultForm;
+
     this.state = {
-      ...defaultForm,
+      ...dForm,
       submitted: false,
     };
 
@@ -113,18 +117,18 @@ class InterviewForm extends React.Component {
   }
 
   componentDidMount() {
-    let defaultFromDraft;
+    // let defaultFromDraft;
 
-    try {
-      defaultFromDraft = JSON.parse(localStorage.getItem(LS_INTERVIEW_FORM_KEY));
-    } catch (error) {
-      defaultFromDraft = null;
-    }
-    const defaultState = defaultFromDraft || defaultForm;
+    // try {
+    //   defaultFromDraft = JSON.parse(localStorage.getItem(LS_INTERVIEW_FORM_KEY));
+    // } catch (error) {
+    //   defaultFromDraft = null;
+    // }
+    // const defaultState = defaultFromDraft || defaultForm;
 
-    this.setState({ // eslint-disable-line react/no-did-mount-set-state
-      ...defaultState,
-    });
+    // this.setState({ // eslint-disable-line react/no-did-mount-set-state
+    //   ...defaultState,
+    // });
   }
 
   onSubmit() {
@@ -289,6 +293,7 @@ class InterviewForm extends React.Component {
 
 InterviewForm.propTypes = {
   onFormPost: PropTypes.func,
+  initDefaultForm: PropTypes.object,
 };
 
 export default InterviewForm;
