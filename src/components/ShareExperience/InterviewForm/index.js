@@ -106,7 +106,7 @@ class InterviewForm extends React.Component {
     this.editBlock = this.editBlock.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
-    const dForm = defaultFormConverter(props.initDefaultForm) || defaultForm;
+    const dForm = props.initDefaultForm ? defaultFormConverter(props.initDefaultForm) : defaultForm;
 
     this.state = {
       ...dForm,
@@ -117,23 +117,27 @@ class InterviewForm extends React.Component {
   }
 
   componentDidMount() {
-    // let defaultFromDraft;
+    const { isEdit } = this.props;
+    if (!isEdit) {
+      let defaultFromDraft;
 
-    // try {
-    //   defaultFromDraft = JSON.parse(localStorage.getItem(LS_INTERVIEW_FORM_KEY));
-    // } catch (error) {
-    //   defaultFromDraft = null;
-    // }
-    // const defaultState = defaultFromDraft || defaultForm;
+      try {
+        defaultFromDraft = JSON.parse(localStorage.getItem(LS_INTERVIEW_FORM_KEY));
+      } catch (error) {
+        defaultFromDraft = null;
+      }
+      const defaultState = defaultFromDraft || defaultForm;
 
-    // this.setState({ // eslint-disable-line react/no-did-mount-set-state
-    //   ...defaultState,
-    // });
+      this.setState({ // eslint-disable-line react/no-did-mount-set-state
+        ...defaultState,
+      });
+    }
   }
 
   onSubmit() {
     const {
       onFormPost,
+      isEdit,
     } = this.props;
     const valid = interviewFormCheck(getInterviewForm(this.state));
 
@@ -150,7 +154,10 @@ class InterviewForm extends React.Component {
           action: GA_ACTION.UPLOAD_FAIL,
         });
       });
-      localStorage.removeItem(LS_INTERVIEW_FORM_KEY);
+      if (!isEdit) {
+        localStorage.removeItem(LS_INTERVIEW_FORM_KEY);
+      }
+
       return p;
     }
     this.handleState('submitted')(true);
@@ -184,6 +191,7 @@ class InterviewForm extends React.Component {
   }
 
   handleState(key) {
+    const { isEdit } = this.props;
     return value => {
       const updateState = {
         [key]: value,
@@ -193,7 +201,10 @@ class InterviewForm extends React.Component {
         ...this.state,
         ...updateState,
       };
-      localStorage.setItem(LS_INTERVIEW_FORM_KEY, JSON.stringify(state));
+
+      if (!isEdit) {
+        localStorage.setItem(LS_INTERVIEW_FORM_KEY, JSON.stringify(state));
+      }
     };
   }
 
@@ -294,6 +305,7 @@ class InterviewForm extends React.Component {
 InterviewForm.propTypes = {
   onFormPost: PropTypes.func,
   initDefaultForm: PropTypes.object,
+  isEdit: PropTypes.bool,
 };
 
 export default InterviewForm;

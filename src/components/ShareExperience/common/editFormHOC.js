@@ -47,6 +47,7 @@ const editFormHOC = Component =>
         <Component
           {...this.props}
           initDefaultForm={defaultFormData}
+          isEdit
         />
       );
     }
