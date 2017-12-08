@@ -28,6 +28,9 @@ const editFormHOC = Component =>
     }
 
     componentDidMount() {
+      // TODO:
+      // auth redirect
+      // onSubmit
       const experienceId = getExperienceId(this.props);
 
       getOneExperiencesApi(experienceId)

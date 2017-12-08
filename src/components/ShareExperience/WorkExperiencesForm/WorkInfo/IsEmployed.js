@@ -33,6 +33,7 @@ const IsEmployed = ({
         {
           isEmployedOptions.map(option => (
             <RadioDefault
+              key={option.value}
               label={option.label}
               value={option.value}
               onChange={onIsCurrentlyEmployed}

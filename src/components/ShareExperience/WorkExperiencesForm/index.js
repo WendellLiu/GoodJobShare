@@ -96,7 +96,7 @@ class WorkExperiencesForm extends React.Component {
     this.editBlock = this.editBlock.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
-    const dForm = defaultFormConverter(props.initDefaultForm) || defaultForm;
+    const dForm = props.initDefaultForm ? defaultFormConverter(props.initDefaultForm) : defaultForm;
 
     this.state = {
       ...dForm,
@@ -107,24 +107,30 @@ class WorkExperiencesForm extends React.Component {
   }
 
   componentDidMount() {
-    let defaultFromDraft;
+    const {
+      isEdit,
+    } = this.props;
+    if (!isEdit) {
+      let defaultFromDraft;
 
-    try {
-      defaultFromDraft = JSON.parse(localStorage.getItem(LS_WORK_EXPERIENCES_FORM_KEY));
-    } catch (error) {
-      defaultFromDraft = null;
+      try {
+        defaultFromDraft = JSON.parse(localStorage.getItem(LS_WORK_EXPERIENCES_FORM_KEY));
+      } catch (error) {
+        defaultFromDraft = null;
+      }
+
+      const defaultState = defaultFromDraft || defaultForm;
+
+      this.setState({ // eslint-disable-line react/no-did-mount-set-state
+        ...defaultState,
+      });
     }
-
-    const defaultState = defaultFromDraft || defaultForm;
-
-    this.setState({ // eslint-disable-line react/no-did-mount-set-state
-      ...defaultState,
-    });
   }
 
   onSubmit() {
     const {
       onFormPost,
+      isEdit,
     } = this.props;
     const valid = workExperiencesFormCheck(propsWorkExperiencesForm(this.state));
 
@@ -141,7 +147,9 @@ class WorkExperiencesForm extends React.Component {
           action: GA_ACTION.UPLOAD_FAIL,
         });
       });
-      localStorage.removeItem(LS_WORK_EXPERIENCES_FORM_KEY);
+      if (!isEdit) {
+        localStorage.removeItem(LS_WORK_EXPERIENCES_FORM_KEY);
+      }
       return p;
     }
     this.handleState('submitted')(true);
@@ -175,6 +183,9 @@ class WorkExperiencesForm extends React.Component {
   }
 
   handleState(key) {
+    const {
+      isEdit,
+    } = this.props;
     return value => {
       const updateState = {
         [key]: value,
@@ -184,7 +195,9 @@ class WorkExperiencesForm extends React.Component {
         ...this.state,
         ...updateState,
       };
-      localStorage.setItem(LS_WORK_EXPERIENCES_FORM_KEY, JSON.stringify(state));
+      if (!isEdit) {
+        localStorage.setItem(LS_WORK_EXPERIENCES_FORM_KEY, JSON.stringify(state));
+      }
     };
   }
 
@@ -299,6 +312,7 @@ class WorkExperiencesForm extends React.Component {
 WorkExperiencesForm.propTypes = {
   onFormPost: PropTypes.func,
   initDefaultForm: PropTypes.object,
+  isEdit: PropTypes.bool,
 };
 
 export default WorkExperiencesForm;
