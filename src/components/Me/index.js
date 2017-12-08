@@ -27,7 +27,9 @@ class Me extends Component {
     const { getLoginStatus, FB, getMe } = this.props;
     getLoginStatus(FB)
       .then(() => getMe(FB))
-      .catch(() => {});
+      .catch(e => {
+        throw e;
+      });
   }
 
   componentDidMount() {
@@ -42,20 +44,26 @@ class Me extends Component {
       const { getLoginStatus, FB } = this.props;
 
       getLoginStatus(FB)
-        .catch(() => {});
+        .catch(e => {
+          throw e;
+        });
     }
 
     if (prevProps.auth.get('status') !== this.props.auth.get('status') &&
       this.props.auth.get('status') === authStatus.CONNECTED) {
       const { getMe, FB } = this.props;
-      getMe(FB).catch(() => {});
+      getMe(FB).catch(e => {
+        throw e;
+      });
     }
   }
 
   login = () => {
     const { login, FB } = this.props;
     login(FB)
-      .catch(() => {});
+      .catch(e => {
+        throw e;
+      });
   }
 
   render() {
