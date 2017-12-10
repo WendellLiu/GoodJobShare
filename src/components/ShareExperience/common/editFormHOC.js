@@ -8,6 +8,7 @@ import {
 
 import {
   getOneExperiences as getOneExperiencesApi,
+  patchOneExperience as patchOneExperienceApi,
 } from '../../../apis/experiencesApi';
 
 const getExperienceId = compose(
@@ -45,12 +46,17 @@ const editFormHOC = Component =>
         defaultFormData,
       } = this.state;
 
+      const experienceId = getExperienceId(this.props);
+
       if (!defaultFormData) return null;
+
+      // TODO: handle status
       return (
         <Component
           {...this.props}
           initDefaultForm={defaultFormData}
           isEdit
+          onFormPost={patchOneExperienceApi(experienceId)}
         />
       );
     }
